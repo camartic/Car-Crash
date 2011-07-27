@@ -1,0 +1,45 @@
+<project name="CARCRASH_APPLET" default="init">
+	<property name="src" location="src"/>
+	<property name="classes" location="classes"/>
+	<property name="images" location="images"/>
+	<property name="dist" location="dist"/>
+	<property name="audio" location="audio">
+		
+	</property>
+	
+	<target name="init">
+		<antcall target="compile"/>
+		<antcall target="copyTextFiles"/>
+		<antcall target="dist"/>
+	</target>
+	
+		<!-- The text files must be included in the jar file using the directory /res, otherwise it will not run-->
+	<target name="copyTextFiles">
+		<copy todir="${classes}/images">
+			<fileset dir="${images}"/>
+		</copy>
+		<copy todir="${classes}/audio">
+			<fileset dir="${audio}"/>
+		</copy>
+	</target>
+	
+	<target name="dist">
+		<!-- Check that dist dir exists -->
+		<mkdir dir="${dist}"/>
+		<!-- build a fresh jar each time if anything changes -->
+		<jar update="true" destfile="${dist}/CARCRASH_APPLET.jar" basedir="${classes}">
+			<manifest>
+				<attribute name="Main-Class" 
+					value="carCrash.CarCrash"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="compile">
+		<!-- check that classes dir exists -->
+		<mkdir dir="${classes}"/>
+		<javac sourcepath="" srcdir="${src}" destdir="${classes}" >
+			<include name="**/*.java"/>
+		</javac>
+	</target>
+</project>
